@@ -24,7 +24,12 @@ public class CoursesController {
     private CreateCourseService createCourseService;
 
 
-
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("courses", new CoursesDto());
+        return "courses/create";
+    }
+    
     @PostMapping("/create")
     public String save(Model model, CoursesDto coursesDto) {
         try{
@@ -37,10 +42,6 @@ public class CoursesController {
         model.addAttribute("courses", coursesDto);
         return "courses/create";
     }
-    @GetMapping("/create")
-    public String create(Model model) {
-        model.addAttribute("courses", new CoursesDto());
-        return "courses/create";
-    }
+
     
 }
