@@ -8,6 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CoursesDto {
+    private String id;
     private String name;
     private String category;
     private String description;

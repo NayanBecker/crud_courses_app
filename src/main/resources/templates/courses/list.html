@@ -22,6 +22,7 @@
         
         <div th:if="${list != null and not #lists.isEmpty(list)}">
             <div th:each="course : ${list}" class="bg-white p-4 rounded-lg my-4 shadow-lg">
+                <a th:href="@{/courses/{id}(id=${course.id})}">
                 <h2 class="text-xl font-bold" th:text="${course.name}"></h2>
                 <p class="text-sm text-gray-700" th:text="${course.description}"></p>
                 <p class="text-sm text-gray-500" th:text="${course.category}"></p>
@@ -36,6 +37,8 @@
             <a href="/courses/create" class="bg-green-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-600">
                 Add New Course
             </a>
+
+            
         </div>
     </div>
 </body>
