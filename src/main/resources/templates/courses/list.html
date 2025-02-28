@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Courses List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <h1 class="text-3xl font-bold mb-5">Courses List</h1>
+
+        <form action="/courses/list" method="get" class="mb-5">
+            <input 
+                type="text" 
+                name="filter" 
+                placeholder="Filter Courses" 
+                class="px-4 py-2 border rounded-md text-gray-900"
+                th:value="${param.filter}"/>
+            <button type="submit" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Search</button>
+        </form>
+        
+        <div th:if="${list != null and not #lists.isEmpty(list)}">
+            <div th:each="course : ${list}" class="bg-white p-4 rounded-lg my-4 shadow-lg">
+                <h2 class="text-xl font-bold" th:text="${course.name}"></h2>
+                <p class="text-sm text-gray-700" th:text="${course.description}"></p>
+                <p class="text-sm text-gray-500" th:text="${course.category}"></p>
+            </div>
+        </div>
+        
+        <div th:if="${list == null or #lists.isEmpty(list)}" class="text-gray-500 text-center">
+            <p>No courses found.</p>
+        </div>
+        
+        <div class="flex justify-center pt-4">
+            <a href="/courses/create" class="bg-green-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-600">
+                Add New Course
+            </a>
+        </div>
+    </div>
+</body>
+</html>
