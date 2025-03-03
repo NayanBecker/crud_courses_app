@@ -6,7 +6,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class DeleteCourseService {
@@ -24,10 +23,9 @@ public class DeleteCourseService {
 
         try {
             restTemplate.exchange(url, HttpMethod.DELETE, request, Void.class);
-            System.out.println(request + "  _____ ID DELETADO");
-            
+            System.out.println("Curso deletado com ID: " + courseId);
         } catch (Exception e) {
-            System.out.println("Error deleting course: " + e.getMessage());
+            System.out.println("Erro ao deletar o curso: " + e.getMessage());
         }
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +53,7 @@ public class CoursesController {
             model.addAttribute("error_message", FormatErrorMessage.formatErrorMessage(e.getResponseBodyAsString()));
         }
         model.addAttribute("courses", coursesDto);
-        return "courses/create";
+        return "redirect:/courses/create";
     }
 
     @GetMapping("/list")
@@ -84,10 +85,11 @@ public class CoursesController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable String id) {
-        deleteCourseService.execute(id);
-        return ResponseEntity.noContent().build();
+public String deleteCourse(@PathVariable String id, RedirectAttributes redirectAttributes) {
+    deleteCourseService.execute(id);
+    redirectAttributes.addFlashAttribute("message", "Curso deletado com sucesso!");
+    return "redirect:/courses/list"; // Agora redireciona corretamente
+}
 
-    }
 
 }
