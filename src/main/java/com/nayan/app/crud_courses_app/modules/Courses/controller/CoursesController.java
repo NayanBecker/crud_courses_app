@@ -1,17 +1,20 @@
 package com.nayan.app.crud_courses_app.modules.Courses.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.nayan.app.crud_courses_app.modules.Courses.dto.CoursesDto;
 import com.nayan.app.crud_courses_app.modules.Courses.service.CreateCourseService;
+import com.nayan.app.crud_courses_app.modules.Courses.service.DeleteCourseService;
 import com.nayan.app.crud_courses_app.modules.Courses.service.GetCourseDetailsService;
 import com.nayan.app.crud_courses_app.modules.Courses.service.ListAllCursesService;
 import com.nayan.app.crud_courses_app.utils.FormatErrorMessage;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +22,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-
 
 @Controller
 @RequestMapping("/courses")
@@ -34,6 +35,8 @@ public class CoursesController {
     @Autowired
     private GetCourseDetailsService getCourseDetailsService;
 
+    @Autowired
+    private DeleteCourseService deleteCourseService;
 
     @GetMapping("/create")
     public String create(Model model) {
@@ -73,12 +76,18 @@ public class CoursesController {
         var course = getCourseDetailsService.execute(id);
         if (course != null) {
             model.addAttribute("course", course);
-            return "courses/getCourse";  
+            return "courses/getCourse";
         } else {
-            
-            return "error";  
+
+            return "error";
         }
     }
-    
-    
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable String id) {
+        deleteCourseService.execute(id);
+        return ResponseEntity.noContent().build();
+
+    }
+
 }
