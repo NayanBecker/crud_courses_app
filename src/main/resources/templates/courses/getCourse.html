@@ -1,33 +1,137 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <meta charset="UTF-8" />
     <title>Course Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
   </head>
   <body class="bg-gray-100">
     <div class="container mx-auto mt-10">
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <h1 class="text-3xl font-bold mb-4" th:text="${course.name}"></h1>
-            <p class="text-lg text-gray-700" th:text="${course.description}"></p>
-            <p class="text-sm text-gray-500 mt-2" th:text="${course.category}"></p>
-            <p class=""></p>
-            
+      <div class="bg-white p-6 rounded-lg shadow-lg">
+        <div class="flex justify-between items-center">
+          <h1
+            id="course-name"
+            class="text-3xl font-bold mb-4"
+            th:text="${course.name}"
+          ></h1>
+          <button id="edit-btn" class="text-gray-600 hover:text-gray-800">
+            ✏️
+          </button>
         </div>
-        <div class="flex justify-end mt-4">
-            <form th:action="@{/courses/delete/{id}(id=${course.id})}" method="post">
-                <input type="hidden" name="_method" value="delete">
-                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-600">
-                        Delete Course
-                </button>
-            </form>
+        <p
+          id="course-description"
+          class="text-lg text-gray-700 max-w-[1300px] break-words"
+          th:text="${course.description}"
+        ></p>
+
+        <div class="flex justify-between items-center">
+          <p
+            id="course-category"
+            class="text-sm text-gray-500 mt-2"
+            th:text="${course.category}"
+          ></p>
+
+          <p
+            id="course-status"
+            class="text-sm text-gray-500 mt-2"
+            th:text="${course.status}"
+          ></p>
         </div>
 
-        <div class="flex justify-center pt-4">
-            <a href="/courses/list" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600">
-                Back to Courses List
-            </a>
-        </div>
+        <!-- Formulário escondido para edição -->
+        <form
+          id="edit-form"
+          class="hidden mt-4"
+          th:action="@{/courses/{id}(id=${course.id})}"
+          method="post"
+        >
+          <!-- Campo oculto para simular um PUT -->
+          <input type="hidden" name="_method" value="put" />
+          <input
+            type="text"
+            name="name"
+            id="edit-name"
+            class="w-full p-2 border rounded-md mb-2"
+            th:value="${course.name}"
+          />
+          <textarea
+            name="description"
+            id="edit-description"
+            class="w-full p-2 border rounded-md mb-2"
+            rows="3"
+            th:text="${course.description}"
+          ></textarea>
+          <input
+            type="text"
+            name="category"
+            id="edit-category"
+            class="w-full p-2 border rounded-md mb-2"
+            th:value="${course.category}"
+          />
+
+          <div class="flex justify-end gap-2">
+            <button
+              type="button"
+              id="cancel-btn"
+              class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="bg-green-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-green-600"
+            >
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="flex justify-end mt-4">
+        <form
+          th:action="@{/courses/delete/{id}(id=${course.id})}"
+          method="post"
+        >
+          <input type="hidden" name="_method" value="delete" />
+          <button
+            type="submit"
+            class="bg-red-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-red-600"
+          >
+            Delete Course
+          </button>
+        </form>
+      </div>
+
+      <div class="flex justify-center pt-4">
+        <a
+          href="/courses/list"
+          class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-sm hover:bg-blue-600"
+        >
+          Back to Courses List
+        </a>
+      </div>
     </div>
+
+    <script>
+      document
+        .getElementById("edit-btn")
+        .addEventListener("click", function () {
+          document.getElementById("course-name").classList.add("hidden");
+          document.getElementById("course-description").classList.add("hidden");
+          document.getElementById("course-category").classList.add("hidden");
+          document.getElementById("edit-form").classList.remove("hidden");
+        });
+
+      document
+        .getElementById("cancel-btn")
+        .addEventListener("click", function () {
+          document.getElementById("course-name").classList.remove("hidden");
+          document
+            .getElementById("course-description")
+            .classList.remove("hidden");
+          document.getElementById("course-category").classList.remove("hidden");
+          document.getElementById("edit-form").classList.add("hidden");
+        });
+    </script>
   </body>
 </html>

@@ -24,7 +24,7 @@
             <div th:each="course : ${list}" class="bg-white p-4 rounded-lg my-4 shadow-lg">
                 <a th:href="@{/courses/{id}(id=${course.id})}">
                 <h2 class="text-xl font-bold" th:text="${course.name}"></h2>
-                <p class="text-sm text-gray-700" th:text="${course.description}"></p>
+                <p class="text-sm text-gray-700" th:text="${course.description.length() > 150? #strings.substring(course.description, 0, 150) + '...' : course.description}"></p>
                 <p class="text-sm text-gray-500" th:text="${course.category}"></p>
             </div>
         </div>
